@@ -88,6 +88,32 @@ public class UserTest {
     assertTrue(myUser.getDueDate(myBook.getId()) instanceof java.sql.Date);
   }
 
+  @Test
+  public void returnBook_removesEntryFromCheckouts() {
+    User myUser = new User("Matt", "password123", "patron");
+    myUser.save();
+
+    Book myBook = new Book("The Stand", 1);
+    myBook.save();
+
+    myUser.checkoutBook(myBook.getId());
+    myUser.returnBook(myBook.getId());
+    assertEquals(0, myUser.getCheckedOutBooks().size());
+    assertTrue(myUser.getHistory().contains(myBook));
+  }
+
+  // @Test
+  // public void findOverdue_returnsListOfUsersWithOverdueBooks() {
+  //   User myUser = new User("Matt", "password123", "patron");
+  //   myUser.save();
+  //   User myUser2 = new User("Abby", "password123", "patron");
+  //   myUser2.save();
+  //   Book myBook = new Book("The Stand", 1);
+  //   myBook.save();
+  //   myUser.checkoutBook(myBook.getId());
+  //
+  // }
+
 
   // @Test
   // public void addStudent_addsStudentToUser() {

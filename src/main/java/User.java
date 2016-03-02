@@ -95,6 +95,7 @@ public class User {
 
   public void checkoutBook(int book_id) {
     long currentDate = System.currentTimeMillis();
+    currentDate -= (long) 259900000; // for testing only
     long dueDate = currentDate + (long)259200000;
     java.sql.Date date = new java.sql.Date(currentDate);
     java.sql.Date due_date = new java.sql.Date(dueDate);
@@ -141,7 +142,17 @@ public class User {
         .addParameter("user_id", id)
         .executeAndFetchFirst(java.sql.Date.class);
       }
+  }
+
+  public void returnBook(int book_id) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "DELETE FROM checkouts WHERE book_id = :book_id AND user_id = :user_id";
+      con.createQuery(sql)
+        .addParameter("book_id", book_id)
+        .addParameter("user_id", id)
+        .executeUpdate();
     }
+  }
 
   // public void addStudent(Student student) {
   //   try(Connection con = DB.sql2o.open()) {
