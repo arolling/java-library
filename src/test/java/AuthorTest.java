@@ -77,8 +77,15 @@ public class AuthorTest {
     assertFalse(myAuthor.getBooks().contains(myBook));
   }
 
-  // @Test
-  // public void searchFirst_searchesFirstNameFor
+  @Test
+  public void searchAuthor_searchesFirstAndLastNameForString() {
+    Author myAuthor = new Author("Stephen", "King");
+    myAuthor.save();
+    assertTrue(Author.searchAuthor("teph").contains(myAuthor));
+    assertFalse(Author.searchAuthor("Queen").contains(myAuthor));
+    assertTrue(Author.searchAuthor("Kin").contains(myAuthor));
+    assertTrue(Author.searchAuthor("Steph King").contains(myAuthor));
+  }
 
 
 

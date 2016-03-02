@@ -95,6 +95,30 @@ public class Author {
     }
   }
 
+  public static List<Author> searchAuthor(String search) {
+    String[] words = search.split("\\s+", 2);
+    ArrayList<Author> foundauthors = new ArrayList<Author>();
+    if (words.length > 1) {
+      words[0] = "%" + words[0] + "%";
+      words[1] = "%" + words[1] + "%";
+      try(Connection con = DB.sql2o.open()) {
+        String sql = "SELECT * FROM authors WHERE LOWER (first_name) LIKE LOWER (:word1) AND LOWER (last_name) LIKE LOWER (:word2)";
+        return con.createQuery(sql)
+          .addParameter("word1", words[0])
+          .addParameter("word2", words[1])
+          .executeAndFetch(Author.class);
+      }
+    } else {
+      words[0] = "%" + words[0] + "%";
+      try(Connection con = DB.sql2o.open()) {
+        String sql = "SELECT * FROM authors WHERE LOWER (first_name) LIKE LOWER (:word) OR LOWER (last_name) LIKE LOWER (:word)";
+        return con.createQuery(sql)
+          .addParameter("word", words[0])
+          .executeAndFetch(Author.class);
+      }
+    }
+  }
+
   // public void addStudent(Student student) {
   //   try(Connection con = DB.sql2o.open()) {
   //     String sql = "INSERT INTO students_authors (student_id, course_id, completed) VALUES (:student_id, :course_id, false)";
