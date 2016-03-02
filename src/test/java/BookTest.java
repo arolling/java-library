@@ -42,6 +42,15 @@ public class BookTest {
     Book savedBook = Book.find(myBook.getId());
     assertTrue(myBook.equals(savedBook));
   }
+
+  @Test
+  public void update_updatesBookNameAndNumber() {
+    Book myBook = new Book("The Stand", 1);
+    myBook.save();
+    myBook.update(102);
+    assertEquals(Book.all().get(0).getCopies(), 102);
+  }
+
   // @Test
   // public void addStudent_addsStudentToBook() {
   //   Student myStudent = new Student("John", "12-23-2015", "History");
@@ -68,13 +77,6 @@ public class BookTest {
   //   assertEquals(savedStudents.size(), 1);
   // }
 
-  @Test
-  public void update_updatesBookNameAndNumber() {
-    Book myBook = new Book("The Stand", 1);
-    myBook.save();
-    myBook.update(102);
-    assertEquals(Book.all().get(0).getCopies(), 102);
-  }
 
   // @Test
   // public void delete_deletesAllBooksAndListsAssoicationes() {

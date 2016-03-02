@@ -62,6 +62,26 @@ public class Book {
     }
   }
 
+  public void update(int copies) {
+    this.copies = copies;
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "UPDATE books SET copies = :copies WHERE id = :id";
+      con.createQuery(sql)
+        .addParameter("copies", copies)
+        .addParameter("id", id)
+        .executeUpdate();
+    }
+  }
+
+  public void delete() {
+    try(Connection con = DB.sql2o.open()) {
+    String sql = "UPDATE books SET copies = 0 WHERE id = :id;";
+      con.createQuery(sql)
+        .addParameter("id", id)
+        .executeUpdate();
+    }
+  }
+
   // public void addStudent(Student student) {
   //   try(Connection con = DB.sql2o.open()) {
   //     String sql = "INSERT INTO students_books (student_id, course_id, completed) VALUES (:student_id, :course_id, false)";
@@ -81,22 +101,5 @@ public class Book {
   //   }
   // }
 
-  public void update(int copies) {
-    try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE books SET copies = :copies WHERE id = :id";
-      con.createQuery(sql)
-        .addParameter("copies", copies)
-        .addParameter("id", id)
-        .executeUpdate();
-    }
-  }
 
-  public void delete() {
-    try(Connection con = DB.sql2o.open()) {
-    String sql = "UPDATE books SET copies = 0 WHERE id = :id;";
-      con.createQuery(sql)
-        .addParameter("id", id)
-        .executeUpdate();
-    }
-  }
 }
