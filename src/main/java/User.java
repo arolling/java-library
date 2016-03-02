@@ -118,7 +118,7 @@ public class User {
 
   public List<Book> getCheckedOutBooks() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT books.* FROM users JOIN checkouts ON (users.id = checkouts.user_id) JOIN books ON (checkouts.book_id = books.id) WHERE user_id=:id";
+      String sql = "SELECT books.* FROM users JOIN checkouts ON (users.id = checkouts.user_id) JOIN books ON (checkouts.book_id = books.id) WHERE user_id=:id ORDER BY checkouts.due_date";
       return con.createQuery(sql)
         .addParameter("id", id)
         .executeAndFetch(Book.class);
@@ -127,7 +127,7 @@ public class User {
 
   public List<Book> getHistory() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT books.* FROM users JOIN reading_history ON (users.id = reading_history.user_id) JOIN books ON (reading_history.book_id = books.id) WHERE user_id=:id";
+      String sql = "SELECT books.* FROM users JOIN reading_history ON (users.id = reading_history.user_id) JOIN books ON (reading_history.book_id = books.id) WHERE user_id=:id ORDER BY reading_history.date";
       return con.createQuery(sql)
         .addParameter("id", id)
         .executeAndFetch(Book.class);

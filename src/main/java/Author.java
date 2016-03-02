@@ -36,7 +36,7 @@ public class Author {
   }
 
   public static List<Author> all() {
-    String sql = "SELECT * FROM authors";
+    String sql = "SELECT * FROM authors ORDER BY last_name";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql).executeAndFetch(Author.class);
     }
@@ -78,7 +78,7 @@ public class Author {
 
   public List<Book> getBooks() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT books.* FROM authors JOIN authors_books ON (authors.id = authors_books.author_id) JOIN books ON (authors_books.book_id = books.id) WHERE author_id=:id";
+      String sql = "SELECT books.* FROM authors JOIN authors_books ON (authors.id = authors_books.author_id) JOIN books ON (authors_books.book_id = books.id) WHERE author_id=:id ORDER BY title";
       return con.createQuery(sql)
         .addParameter("id", id)
         .executeAndFetch(Book.class);
@@ -102,7 +102,7 @@ public class Author {
       words[0] = "%" + words[0] + "%";
       words[1] = "%" + words[1] + "%";
       try(Connection con = DB.sql2o.open()) {
-        String sql = "SELECT * FROM authors WHERE LOWER (first_name) LIKE LOWER (:word1) AND LOWER (last_name) LIKE LOWER (:word2)";
+        String sql = "SELECT * FROM authors WHERE LOWER (first_name) LIKE LOWER (:word1) AND LOWER (last_name) LIKE LOWER (:word2) ORDER BY last_name";
         return con.createQuery(sql)
           .addParameter("word1", words[0])
           .addParameter("word2", words[1])
@@ -111,7 +111,7 @@ public class Author {
     } else {
       words[0] = "%" + words[0] + "%";
       try(Connection con = DB.sql2o.open()) {
-        String sql = "SELECT * FROM authors WHERE LOWER (first_name) LIKE LOWER (:word) OR LOWER (last_name) LIKE LOWER (:word)";
+        String sql = "SELECT * FROM authors WHERE LOWER (first_name) LIKE LOWER (:word) OR LOWER (last_name) LIKE LOWER (:word) ORDER BY last_name";
         return con.createQuery(sql)
           .addParameter("word", words[0])
           .executeAndFetch(Author.class);

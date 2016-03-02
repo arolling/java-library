@@ -21,9 +21,25 @@ public class AppTest extends FluentTest {
   @ClassRule
   public static ServerRule server = new ServerRule();
 
+  @Rule
+  public DatabaseRule database = new DatabaseRule();
+
   @Test
   public void rootTest() {
-      goTo("http://localhost:4567/");
-      assertThat(pageSource()).contains("");
+    goTo("http://localhost:4567/");
+    assertThat(pageSource()).contains("Epicodus Library");
+  }
+
+  @Test
+  public void login() {
+    User myUser = new User("Matt", "password123", "patron");
+    myUser.save();
+    User myUser2 = new User("Abby", "password", "patron");
+    myUser2.save();
+    goTo("http://localhost:4567/");
+    click("option", withText("Matt"));
+    fill("#userPassword").with("password123");
+    submit("#userLogin");
+    assertThat(pageSource()).contains("Welcome, Matt");
   }
 }

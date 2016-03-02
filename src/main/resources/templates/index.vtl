@@ -1,0 +1,22 @@
+<h1>Please Select:</h1>
+
+<form class="form-horizontal" action="/login" method="post">
+  <div class="form-group">
+    <label for="userName" class="col-sm-2 control-label">Name</label>
+    <div class="col-sm-10">
+      <select class="form-control" name="userName">
+        #foreach($user in $allUsers)
+          <option value="$user.getId()">$user.getName()</option>
+        #end
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="userPassword" class="col-sm-2 control-label">Password</label>
+    <div class="col-sm-10">
+      <input type="password" name="userPassword" id="userPassword" class="form-control" placeholder="Password">
+    </div>
+  </div>
+  <button type="submit" id="userLogin" class="btn btn-primary">Log In</button>
+
+</form>

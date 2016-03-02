@@ -35,7 +35,7 @@ public class Book {
   }
 
   public static List<Book> all() {
-    String sql = "SELECT * FROM books";
+    String sql = "SELECT * FROM books ORDER BY title";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql).executeAndFetch(Book.class);
     }
@@ -94,7 +94,7 @@ public class Book {
 
   public List<Author> getAuthors() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT authors.* FROM books JOIN authors_books ON (books.id = authors_books.book_id) JOIN authors ON (authors_books.author_id = authors.id) WHERE book_id=:id";
+      String sql = "SELECT authors.* FROM books JOIN authors_books ON (books.id = authors_books.book_id) JOIN authors ON (authors_books.author_id = authors.id) WHERE book_id=:id ORDER BY last_name";
       return con.createQuery(sql)
         .addParameter("id", id)
         .executeAndFetch(Author.class);
@@ -104,7 +104,7 @@ public class Book {
   public static List<Book> searchTitle(String search) {
     search = "%" + search + "%";
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT * FROM books WHERE LOWER (title) LIKE LOWER (:search)";
+      String sql = "SELECT * FROM books WHERE LOWER (title) LIKE LOWER (:search) ORDER BY title";
       return con.createQuery(sql)
         .addParameter("search", search)
         .executeAndFetch(Book.class);

@@ -7,6 +7,30 @@ import static spark.Spark.*;
 
 public class App {
   public static void main(String[] args) {
+    staticFileLocation("/public");
+    String layout = "templates/layout.vtl";
 
+    get("/", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      model.put("allUsers", User.all());
+      model.put("template", "templates/index.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/login", (request, response) -> {
+      int userId = Integer.parseInt(request.queryParams("userName"));
+      User user = User.find(userId);
+      request.session().attribute("currentUser", user);
+      response.redirect("/welcome");
+      return null;
+    });
+
+    get("/welcome", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      User currentUser = request.session().attribute("currentUser");
+      model.put("currentUser", currentUser);
+      model.put("template", "templates/welcome.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
   }
 }
