@@ -31,15 +31,20 @@ public class AppTest extends FluentTest {
   }
 
   @Test
-  public void login() {
+  public void loginPatron() {
     User myUser = new User("Matt", "password123", "patron");
     myUser.save();
     User myUser2 = new User("Abby", "password", "patron");
     myUser2.save();
+    Book myBook = new Book("The Stand", 1);
+    myBook.save();
+    myUser.checkoutBook(myBook.getId());
     goTo("http://localhost:4567/");
     click("option", withText("Matt"));
     fill("#userPassword").with("password123");
     submit("#userLogin");
     assertThat(pageSource()).contains("Welcome, Matt");
+    assertThat(pageSource()).contains("Search Catalog");
+    assertThat(pageSource()).contains("The Stand");
   }
 }
