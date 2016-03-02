@@ -95,4 +95,17 @@ public class BookTest {
     assertTrue(Book.searchTitle("stand").contains(myBook));
   }
 
+  @Test
+  public void copiesLeft_returnsNumberOfCopiesOnShelves() {
+    User myUser = new User("Matt", "password123", "patron");
+    myUser.save();
+
+    Book myBook = new Book("The Stand", 3);
+    myBook.save();
+
+    myUser.checkoutBook(myBook.getId());
+    assertEquals((int)myBook.copiesLeft(), 2);
+
+  }
+
 }

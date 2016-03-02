@@ -111,5 +111,15 @@ public class Book {
     }
   }
 
+  public Integer copiesLeft() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT count(*) FROM checkouts WHERE book_id = :id";
+      Integer checkedOut = con.createQuery(sql)
+        .addParameter("id", id)
+        .executeAndFetchFirst(Integer.class);
+      return copies - checkedOut;
+    }
+  }
+
 
 }
