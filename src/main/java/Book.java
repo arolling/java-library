@@ -101,5 +101,15 @@ public class Book {
     }
   }
 
+  public static List<Book> searchTitle(String search) {
+    search = "%" + search + "%";
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT * FROM books WHERE LOWER (title) LIKE LOWER (:search)";
+      return con.createQuery(sql)
+        .addParameter("search", search)
+        .executeAndFetch(Book.class);
+    }
+  }
+
 
 }

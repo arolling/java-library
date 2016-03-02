@@ -102,17 +102,18 @@ public class UserTest {
     assertTrue(myUser.getHistory().contains(myBook));
   }
 
-  // @Test
-  // public void findOverdue_returnsListOfUsersWithOverdueBooks() {
-  //   User myUser = new User("Matt", "password123", "patron");
-  //   myUser.save();
-  //   User myUser2 = new User("Abby", "password123", "patron");
-  //   myUser2.save();
-  //   Book myBook = new Book("The Stand", 1);
-  //   myBook.save();
-  //   myUser.checkoutBook(myBook.getId());
-  //
-  // }
+  @Test
+  public void findOverdue_returnsListOfUsersWithOverdueBooks() {
+    User myUser = new User("Matt", "password123", "patron");
+    myUser.save();
+    User myUser2 = new User("Abby", "password123", "patron");
+    myUser2.save();
+    Book myBook = new Book("The Stand", 1);
+    myBook.save();
+    myUser.checkoutBook(myBook.getId());
+    assertEquals(User.findOverdue().get(0).getName(), myUser.getName());
+    assertTrue(User.findOverdue().contains(myUser));
+  }
 
 
   // @Test

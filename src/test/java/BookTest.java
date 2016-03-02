@@ -88,4 +88,11 @@ public class BookTest {
     assertTrue(myBook.equals(savedBook));
   }
 
+  @Test
+  public void searchTitle_searchesForMatchingTitles() {
+    Book myBook = new Book("The Stand", 1);
+    myBook.save();
+    assertTrue(Book.searchTitle("stand").contains(myBook));
+  }
+
 }
