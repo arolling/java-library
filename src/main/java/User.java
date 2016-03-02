@@ -93,6 +93,56 @@ public class User {
     }
   }
 
+  public void checkoutBook(int book_id) {
+    long currentDate = System.currentTimeMillis();
+    long dueDate = currentDate + (long)259200000;
+    java.sql.Date date = new java.sql.Date(currentDate);
+    java.sql.Date due_date = new java.sql.Date(dueDate);
+    try(Connection con = DB.sql2o.open()) {
+      String checkoutsql = "INSERT INTO checkouts (user_id, book_id, due_date) VALUES (:user_id, :book_id, :date)";
+      con.createQuery(checkoutsql)
+        .addParameter("user_id", id)
+        .addParameter("book_id", book_id)
+        .addParameter("date", due_date)
+        .executeUpdate();
+
+      String historysql = "INSERT INTO reading_history (user_id, book_id, date) VALUES (:user_id, :book_id, :date)";
+      con.createQuery(historysql)
+        .addParameter("user_id", id)
+        .addParameter("book_id", book_id)
+        .addParameter("date", date)
+        .executeUpdate();
+    }
+  }
+
+  public List<Book> getCheckedOutBooks() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT books.* FROM users JOIN checkouts ON (users.id = checkouts.user_id) JOIN books ON (checkouts.book_id = books.id) WHERE user_id=:id";
+      return con.createQuery(sql)
+        .addParameter("id", id)
+        .executeAndFetch(Book.class);
+    }
+  }
+
+  public List<Book> getHistory() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT books.* FROM users JOIN reading_history ON (users.id = reading_history.user_id) JOIN books ON (reading_history.book_id = books.id) WHERE user_id=:id";
+      return con.createQuery(sql)
+        .addParameter("id", id)
+        .executeAndFetch(Book.class);
+    }
+  }
+
+  public java.sql.Date getDueDate(int book_id) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT due_date FROM checkouts WHERE book_id = :book_id AND user_id = :user_id";
+      return con.createQuery(sql)
+        .addParameter("book_id", book_id)
+        .addParameter("user_id", id)
+        .executeAndFetchFirst(java.sql.Date.class);
+      }
+    }
+
   // public void addStudent(Student student) {
   //   try(Connection con = DB.sql2o.open()) {
   //     String sql = "INSERT INTO students_users (student_id, course_id, completed) VALUES (:student_id, :course_id, false)";

@@ -76,6 +76,25 @@ public class Author {
     }
   }
 
+  public List<Book> getBooks() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT books.* FROM authors JOIN authors_books ON (authors.id = authors_books.author_id) JOIN books ON (authors_books.book_id = books.id) WHERE author_id=:id";
+      return con.createQuery(sql)
+        .addParameter("id", id)
+        .executeAndFetch(Book.class);
+    }
+  }
+
+  public void deleteBook(int book_id) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "DELETE FROM authors_books WHERE author_id = :author_id AND book_id = :book_id";
+      con.createQuery(sql)
+        .addParameter("book_id", book_id)
+        .addParameter("author_id", id)
+        .executeUpdate();
+    }
+  }
+
   // public void addStudent(Student student) {
   //   try(Connection con = DB.sql2o.open()) {
   //     String sql = "INSERT INTO students_authors (student_id, course_id, completed) VALUES (:student_id, :course_id, false)";
@@ -86,14 +105,7 @@ public class Author {
   //   }
   // }
 
-  // public List<Student> getStudents() {
-  //   try(Connection con = DB.sql2o.open()) {
-  //     String sql = "SELECT students.* FROM authors JOIN students_authors ON (authors.id = students_authors.course_id) JOIN students ON (students_authors.student_id = students.id) WHERE course_id=:id";
-  //     return con.createQuery(sql)
-  //       .addParameter("id", id)
-  //       .executeAndFetch(Student.class);
-  //   }
-  // }
+
 
 
 

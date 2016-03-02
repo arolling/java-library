@@ -51,44 +51,41 @@ public class BookTest {
     assertEquals(Book.all().get(0).getCopies(), 102);
   }
 
-  // @Test
-  // public void addStudent_addsStudentToBook() {
-  //   Student myStudent = new Student("John", "12-23-2015", "History");
-  //   myStudent.save();
-  //
-  //   Book myBook = new Book("The Stand", 1);
-  //   myBook.save();
-  //
-  //   myBook.addStudent(myStudent);
-  //   Student savedStudent = myBook.getStudents().get(0);
-  //   assertTrue(myStudent.equals(savedStudent));
-  // }
+  @Test
+  public void addAuthor_addsAuthorToBook() {
+    Author myAuthor = new Author("Stephen", "King");
+    myAuthor.save();
 
-  // @Test
-  // public void getStudents_returnsAllStudents_ArrayList() {
-  //   Student myStudent = new Student("John", "12-23-2015", "History");
-  //   myStudent.save();
-  //
-  //   Book myBook = new Book("The Stand", 1);
-  //   myBook.save();
-  //
-  //   myBook.addStudent(myStudent);
-  //   List savedStudents = myBook.getStudents();
-  //   assertEquals(savedStudents.size(), 1);
-  // }
+    Book myBook = new Book("The Stand", 1);
+    myBook.save();
+
+    myBook.addAuthor(myAuthor);
+    Author savedAuthor = myBook.getAuthors().get(0);
+    assertTrue(myAuthor.equals(savedAuthor));
+  }
+
+  @Test
+  public void getAuthors_returnsAllAuthors_ArrayList() {
+    Author myAuthor = new Author("Stephen", "King");
+    myAuthor.save();
+
+    Book myBook = new Book("The Stand", 1);
+    myBook.save();
+
+    myBook.addAuthor(myAuthor);
+    assertEquals(myBook.getAuthors().size(), 1);
+  }
 
 
-  // @Test
-  // public void delete_deletesAllBooksAndListsAssoicationes() {
-  //   Student myStudent = new Student("Matt", "2010-08-15", "History");
-  //   myStudent.save();
-  //
-  //   Book myBook = new Book("The Stand", 1);
-  //   myBook.save();
-  //
-  //   myBook.addStudent(myStudent);
-  //   myBook.delete();
-  //   assertEquals(myStudent.getBooks().size(), 0);
-  // }
+  @Test
+  public void delete_SetsCopiesToZero() {
+    Book myBook = new Book("The Stand", 1);
+    myBook.save();
+
+    myBook.delete();
+    Book savedBook = Book.find(myBook.getId());
+    assertEquals(myBook.getCopies(), 0);
+    assertTrue(myBook.equals(savedBook));
+  }
 
 }

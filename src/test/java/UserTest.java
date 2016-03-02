@@ -61,6 +61,33 @@ public class UserTest {
     assertEquals(myUser, savedUser);
   }
 
+  @Test
+  public void checkoutBook_assignsBookToUser() {
+    User myUser = new User("Matt", "password123", "patron");
+    myUser.save();
+
+    Book myBook = new Book("The Stand", 1);
+    myBook.save();
+
+    myUser.checkoutBook(myBook.getId());
+
+    assertTrue(myUser.getCheckedOutBooks().get(0).equals(myBook));
+    assertTrue(myUser.getHistory().contains(myBook));
+  }
+
+  @Test
+  public void getDueDate_returnsCopyDueDate() {
+    User myUser = new User("Matt", "password123", "patron");
+    myUser.save();
+
+    Book myBook = new Book("The Stand", 1);
+    myBook.save();
+
+    myUser.checkoutBook(myBook.getId());
+    //assertEquals(0, myUser.getDueDate(myBook.getId()));
+    assertTrue(myUser.getDueDate(myBook.getId()) instanceof java.sql.Date);
+  }
+
 
   // @Test
   // public void addStudent_addsStudentToUser() {
@@ -91,15 +118,15 @@ public class UserTest {
 
   // @Test
   // public void delete_deletesAllUsersAndListsAssoicationes() {
-  //   Student myStudent = new Student("Matt", "2010-08-15", "History");
-  //   myStudent.save();
+  //   Book myBook = new Book("The Stand", 1);
+  //   myBook.save();
   //
   //   User myUser = new User("Matt", "password123", "librarian");
   //   myUser.save();
   //
-  //   myUser.addStudent(myStudent);
+  //   myUser.checkoutBook(myBook);
   //   myUser.delete();
-  //   assertEquals(myStudent.getUsers().size(), 0);
+  //   assertEquals(myBook.getUsers().size(), 0);
   // }
 
 }

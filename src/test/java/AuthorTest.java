@@ -51,31 +51,32 @@ public class AuthorTest {
     Author savedAuthor = Author.find(myAuthor.getId());
     assertEquals(myAuthor, savedAuthor);
   }
-  // @Test
-  // public void addStudent_addsStudentToAuthor() {
-  //   Student myStudent = new Student("John", "12-23-2015", "History");
-  //   myStudent.save();
-  //
-  //   Author myAuthor = new Author("Stephen", "King");
-  //   myAuthor.save();
-  //
-  //   myAuthor.addStudent(myStudent);
-  //   Student savedStudent = myAuthor.getStudents().get(0);
-  //   assertTrue(myStudent.equals(savedStudent));
-  // }
 
-  // @Test
-  // public void getStudents_returnsAllStudents_ArrayList() {
-  //   Student myStudent = new Student("John", "12-23-2015", "History");
-  //   myStudent.save();
-  //
-  //   Author myAuthor = new Author("Stephen", "King");
-  //   myAuthor.save();
-  //
-  //   myAuthor.addStudent(myStudent);
-  //   List savedStudents = myAuthor.getStudents();
-  //   assertEquals(savedStudents.size(), 1);
-  // }
+  @Test
+  public void getBooks_returnsAllBooks_ArrayList() {
+    Author myAuthor = new Author("Stephen", "King");
+    myAuthor.save();
+
+    Book myBook = new Book("The Stand", 1);
+    myBook.save();
+
+    myBook.addAuthor(myAuthor);
+    assertEquals(myAuthor.getBooks().size(), 1);
+  }
+
+  @Test
+  public void deleteBook_deletesAuthorFromBook_joinTable(){
+    Author myAuthor = new Author("Stephen", "King");
+    myAuthor.save();
+
+    Book myBook = new Book("The Stand", 1);
+    myBook.save();
+
+    myBook.addAuthor(myAuthor);
+    myAuthor.deleteBook(myBook.getId());
+    assertFalse(myAuthor.getBooks().contains(myBook));
+  }
+
 
 
 

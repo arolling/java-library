@@ -55,10 +55,9 @@ public class Book {
   public static Book find(int id) {
     try(Connection con = DB.sql2o.open()) {
       String sql = "SELECT * FROM books where id=:id";
-      Book course = con.createQuery(sql)
+      return con.createQuery(sql)
         .addParameter("id", id)
         .executeAndFetchFirst(Book.class);
-      return course;
     }
   }
 
@@ -74,6 +73,7 @@ public class Book {
   }
 
   public void delete() {
+    copies = 0;
     try(Connection con = DB.sql2o.open()) {
     String sql = "UPDATE books SET copies = 0 WHERE id = :id;";
       con.createQuery(sql)
@@ -82,24 +82,24 @@ public class Book {
     }
   }
 
-  // public void addStudent(Student student) {
-  //   try(Connection con = DB.sql2o.open()) {
-  //     String sql = "INSERT INTO students_books (student_id, course_id, completed) VALUES (:student_id, :course_id, false)";
-  //     con.createQuery(sql)
-  //     .addParameter("student_id", student.getId())
-  //     .addParameter("course_id", id)
-  //     .executeUpdate();
-  //   }
-  // }
+  public void addAuthor(Author author) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "INSERT INTO authors_books (author_id, book_id) VALUES (:author_id, :book_id)";
+      con.createQuery(sql)
+      .addParameter("author_id", author.getId())
+      .addParameter("book_id", id)
+      .executeUpdate();
+    }
+  }
 
-  // public List<Student> getStudents() {
-  //   try(Connection con = DB.sql2o.open()) {
-  //     String sql = "SELECT students.* FROM books JOIN students_books ON (books.id = students_books.course_id) JOIN students ON (students_books.student_id = students.id) WHERE course_id=:id";
-  //     return con.createQuery(sql)
-  //       .addParameter("id", id)
-  //       .executeAndFetch(Student.class);
-  //   }
-  // }
+  public List<Author> getAuthors() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT authors.* FROM books JOIN authors_books ON (books.id = authors_books.book_id) JOIN authors ON (authors_books.author_id = authors.id) WHERE book_id=:id";
+      return con.createQuery(sql)
+        .addParameter("id", id)
+        .executeAndFetch(Author.class);
+    }
+  }
 
 
 }
