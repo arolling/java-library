@@ -113,5 +113,28 @@ public class App {
       model.put("template", "templates/welcome.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
+
+    get("/authors/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      Author author = Author.find(Integer.parseInt(request.params("id")));
+      User currentUser = request.session().attribute("currentUser");
+      model.put("author", author);
+      model.put("currentUser", currentUser);
+      model.put("template", "templates/author.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/addUser", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      String newUsername = request.queryParams("userName");
+      String newPassword = request.queryParams("userPassword");
+      String newPermissions = request.queryParams("userPermissions");
+      User newUser = new User(newUsername, newPassword, newPermissions);
+      User currentUser = request.session().attribute("currentUser");
+      model.put("currentUser", currentUser);
+      model.put("newUser", newUser);
+      model.put("template", "templates/welcome.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
   }
 }

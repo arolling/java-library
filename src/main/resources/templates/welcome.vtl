@@ -13,7 +13,9 @@
       <dl>
         #foreach($book in $currentUser.getCheckedOutBooks())
           <dt><a href="/books/$book.getId()">$book.getTitle()</a> by $book.getPrettyAuthors()</dt>
-          <dd>Due Date: $currentUser.getDueDate($book.getId())</dd>
+          <dd>Due Date: $currentUser.getDueDate($book.getId()) #if($book.isOverdue($currentUser))<span class="overdue">OVERDUE</span>#end</dd>
+          <dd><a href="return/$book.getId()" class="btn btn-default btn-xs">Return</a></dd>
+
         #end
       </dl>
     </div>
@@ -29,5 +31,52 @@
 
 
 #else
+<div class="row">
+  <div class="col-md-5">
+    #if($newUser)
+    <h4>$newUser.getName() has been added as a $newUser.getPermissions().</h4>
+    <br />
+    #end
+    <h3>Add Patron</h3>
 
+    <form class="form-horizontal" action="/addUser" method="post">
+      <div class="form-group">
+        <label for="userName" class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-10">
+          <input type="text" name="userName" id="userName" class="form-control">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="userPassword" class="col-sm-2 control-label">Password</label>
+        <div class="col-sm-10">
+          <input type="password" name="userPassword" id="userPassword" class="form-control" placeholder="Password">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="userPermissions" class="col-sm-2 control-label">Permissions</label>
+        <div class="col-sm-10">
+          <select class="form-control" name="userPermissions" id="userPermissions">
+            <option value="patron">Patron</option>
+            <option value="librarian">Librarian</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" id="addUser" class="btn btn-primary">Add User</button>
+
+    </form>
+  </div>
+  <div class="col-md-5">
+
+  </div>
+  <div class="col-md-2">
+    <h3><a href="/search">Search Catalog</a></h3>
+    <hr />
+    <h3><a href="/browse">Browse Catalog</a></h3>
+    <hr />
+    <h3><a href="/overdue">Find Overdue</a></h3>
+    <hr />
+    <h3><a href="/users">View All Users</a></h3>
+    <hr />
+  </div>
+</div>
 #end

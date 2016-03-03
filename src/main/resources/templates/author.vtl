@@ -1,0 +1,6 @@
+<h1>$author.getFirstName() $author.getLastName()</h1>
+
+<h5>List of Works</h5>
+#foreach($book in $author.getBooks())
+<h3><a href="/books/$book.getId()">$book.getTitle()</a></h3>
+#end

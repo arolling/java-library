@@ -15,7 +15,11 @@
     </div>
     <footer class="footer">
       <div class="container">
-        <a href="/" class="footerlink">Login</a> <br/>
+        <a href="/" class="footerlink">Login</a>
+        #if($currentUser)
+        <a href="/welcome" class="footerlink">Home</a>
+        #end
+         <br/>
         <p class="text-muted small">Copyright 2016 Abigail Rolling & Matt Rosanio</p>
       </div>
     </footer>

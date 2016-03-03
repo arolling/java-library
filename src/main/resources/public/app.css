@@ -23,5 +23,17 @@ body {
   text-align: right;
 }
 dd {
-  padding-bottom: 3px;
+  padding-bottom: 7px;
+}
+dt {
+  padding-top: 15px;
+}
+
+.overdue {
+  color: red;
+  font-weight: bold;
+}
+
+.footerlink {
+  margin-left: 20px;
 }
