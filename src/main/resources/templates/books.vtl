@@ -1,0 +1,6 @@
+<h1>Catalog:</h1>
+
+#foreach($book in $books)
+  <h3><a href="/books/$book.getId()">$book.getTitle()</a></h3>
+  <h4>By $book.getPrettyAuthors()</h4>
+#end

@@ -1,20 +1,31 @@
 <h1>Welcome, $currentUser.getName()</h1>
 
 #if($currentUser.getPermissions().equals("patron"))
-  <h3><a href="/search">Search Catalog</a></h3>
-  <hr />
-  <h3><a href="/browse">Browse Catalog</a></h3>
-  <hr />
-  <h3><a href="/history">View History</a></h3>
-  <hr />
-  <br>
-  <h4>Currently Checked Out Books</h4>
-  <dl>
-    #foreach($book in $currentUser.getCheckedOutBooks())
-      <dt><a href="books/$book.getId()">$book.getTitle()</a></dt>
-      <dd>Due Date: $currentUser.getDueDate($book.getId())</dd>
-    #end
-  </dl>
+  <div class="row">
+    <div class="col-md-9">
+      #if($newBook)
+        <h3>You have successfully checked out $newBook.getTitle() by $newBook.getPrettyAuthors()</h3>
+      #end
+      <br>
+      <h4>Currently Checked Out Books</h4>
+      <dl>
+        #foreach($book in $currentUser.getCheckedOutBooks())
+          <dt><a href="/books/$book.getId()">$book.getTitle()</a> by $book.getPrettyAuthors()</dt>
+          <dd>Due Date: $currentUser.getDueDate($book.getId())</dd>
+        #end
+      </dl>
+    </div>
+    <div class="col-md-3" id="catalognav">
+      <h3><a href="/search">Search Catalog</a></h3>
+      <hr />
+      <h3><a href="/browse">Browse Catalog</a></h3>
+      <hr />
+      <h3><a href="/history">View History</a></h3>
+      <hr />
+    </div>
+  </div>
+
+
 #else
 
 #end

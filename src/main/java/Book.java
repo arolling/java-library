@@ -101,6 +101,20 @@ public class Book {
     }
   }
 
+  public String getPrettyAuthors() {
+    List<Author> authors = this.getAuthors();
+    String pretty = "";
+    for(int i = 0 ; i < authors.size() ; i++) {
+      pretty += authors.get(i).getFirstName() + " " + authors.get(i).getLastName();
+      if (i < authors.size() - 2) {
+        pretty += ", ";
+      } else if (i == authors.size() - 2) {
+        pretty += ", and ";
+      }
+    }
+    return pretty;
+  }
+
   public static List<Book> searchTitle(String search) {
     search = "%" + search + "%";
     try(Connection con = DB.sql2o.open()) {

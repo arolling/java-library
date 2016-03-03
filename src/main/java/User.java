@@ -95,7 +95,7 @@ public class User {
 
   public void checkoutBook(int book_id) {
     long currentDate = System.currentTimeMillis();
-    currentDate -= (long) 2069900000; // for testing only
+    currentDate -= (long) 1569900000; // for testing only
     long dueDate = currentDate + (long)259200000;
     java.sql.Date date = new java.sql.Date(currentDate);
     java.sql.Date due_date = new java.sql.Date(dueDate);

@@ -71,5 +71,26 @@ public class App {
       model.put("template", "templates/book.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
+//This should be a post method, theoretically
+    get("/checkout/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      Book book = Book.find(Integer.parseInt(request.params("id")));
+      User currentUser = request.session().attribute("currentUser");
+      currentUser.checkoutBook(book.getId());
+
+      model.put("newBook", book);
+      model.put("currentUser", currentUser);
+      model.put("template", "templates/welcome.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/browse", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      User currentUser = request.session().attribute("currentUser");
+      model.put("books", Book.all());
+      model.put("currentUser", currentUser);
+      model.put("template", "templates/books.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
   }
 }

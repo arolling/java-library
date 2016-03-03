@@ -68,4 +68,24 @@ public class AppTest extends FluentTest {
     submit(".btn");
     assertThat(pageSource()).contains("The Stand");
   }
+
+  @Test
+  public void checkout() {
+    User myUser = new User("Matt", "password123", "patron");
+    myUser.save();
+    User myUser2 = new User("Abby", "password", "patron");
+    myUser2.save();
+    Book myBook = new Book("The Stand", 1);
+    myBook.save();
+    Book myBook2 = new Book("Nitjdflkhadfihi", 3);
+    myBook2.save();
+
+    goTo("http://localhost:4567/");
+    click("option", withText("Matt"));
+    fill("#userPassword").with("password123");
+    submit("#userLogin");
+    goTo("http://localhost:4567/books/" + myBook.getId());
+    click("a", withText("Checkout"));
+    assertThat(pageSource()).contains("You have successfully checked out The Stand");
+  }
 }
