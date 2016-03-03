@@ -48,7 +48,7 @@ public class BookTest {
     Book myBook = new Book("The Stand", 1);
     myBook.save();
     myBook.update(102);
-    assertEquals(Book.all().get(0).getCopies(), 102);
+    assertEquals(Book.all().get(0).getCopies(), 103);
   }
 
   @Test
@@ -74,6 +74,19 @@ public class BookTest {
 
     myBook.addAuthor(myAuthor);
     assertEquals(myBook.getAuthors().size(), 1);
+  }
+
+  @Test
+  public void getPatrons_returnsAllUsersCurrentlyReading() {
+    Author myAuthor = new Author("Stephen", "King");
+    myAuthor.save();
+    User myUser = new User("Matt", "password123", "patron");
+    myUser.save();
+    Book myBook = new Book("The Stand", 1);
+    myBook.save();
+    myUser.checkoutBook(myBook.getId());
+    myBook.addAuthor(myAuthor);
+    assertTrue(myBook.getPatrons().contains(myUser));
   }
 
 

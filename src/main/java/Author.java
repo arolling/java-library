@@ -118,27 +118,4 @@ public class Author {
       }
     }
   }
-
-  // public void addStudent(Student student) {
-  //   try(Connection con = DB.sql2o.open()) {
-  //     String sql = "INSERT INTO students_authors (student_id, course_id, completed) VALUES (:student_id, :course_id, false)";
-  //     con.createQuery(sql)
-  //     .addParameter("student_id", student.getId())
-  //     .addParameter("course_id", id)
-  //     .executeUpdate();
-  //   }
-  // }
-
-
-
-
-
-  // public void delete() {
-  //   try(Connection con = DB.sql2o.open()) {
-  //   String sql = "UPDATE authors SET last_name = 0 WHERE id = :id;";
-  //     con.createQuery(sql)
-  //       .addParameter("id", id)
-  //       .executeUpdate();
-  //   }
-  // }
 }

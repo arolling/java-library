@@ -94,6 +94,16 @@ public class Book {
     }
   }
 
+  public void removeAuthor(Author author) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "DELETE FROM authors_books WHERE author_id = :author_id AND book_id = :book_id";
+      con.createQuery(sql)
+      .addParameter("author_id", author.getId())
+      .addParameter("book_id", id)
+      .executeUpdate();
+    }
+  }
+
   public List<Author> getAuthors() {
     try(Connection con = DB.sql2o.open()) {
       String sql = "SELECT authors.* FROM books JOIN authors_books ON (books.id = authors_books.book_id) JOIN authors ON (authors_books.author_id = authors.id) WHERE book_id=:id ORDER BY last_name";
@@ -115,6 +125,15 @@ public class Book {
       }
     }
     return pretty;
+  }
+
+  public List<User> getPatrons() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT users.* FROM checkouts JOIN users ON (users.id = checkouts.user_id) WHERE checkouts.book_id = :id";
+      return con.createQuery(sql)
+        .addParameter("id", id)
+        .executeAndFetch(User.class);
+    }
   }
 
   public static List<Book> searchTitle(String search) {

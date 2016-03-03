@@ -1,6 +1,56 @@
 <h1>$author.getFirstName() $author.getLastName()</h1>
+<div class="row">
+  <div class="col-md-8">
+    <h2>List of Works</h2>
+    #foreach($book in $author.getBooks())
+    <h3><a href="/books/$book.getId()">$book.getTitle()</a></h3>
+    #end
+  </div>
+  <div class="col-md-4">
+    #if($currentUser.getPermissions().equals("librarian"))
+    <h3>Add a Book</h3>
+    <form class="form-horizontal" action="/authors/$author.getId()/addBook" method="post">
 
-<h5>List of Works</h5>
-#foreach($book in $author.getBooks())
-<h3><a href="/books/$book.getId()">$book.getTitle()</a></h3>
-#end
+      <div class="form-group">
+        <label for="addBook" class="col-sm-2 control-label">Book</label>
+        <div class="col-sm-10">
+          <select class="form-control" name="addBook" id="addBook">
+            #foreach($book in $books)
+              #if(!$author.getBooks().contains($book))
+                <option value="$book.getId()">$book.getTitle()</option>
+              #end
+            #end
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" class="btn btn-primary">Add Book</button>
+        </div>
+      </div>
+    </form>
+    <hr />
+    <h3>Remove a Book</h3>
+    <form class="form-horizontal" action="/authors/$author.getId()/removeBook" method="post">
+
+      <div class="form-group">
+        <label for="removeBook" class="col-sm-2 control-label">Book</label>
+        <div class="col-sm-10">
+          <select class="form-control" name="removeBook" id="removeBook">
+            #foreach($book in $author.getBooks())
+              <option value="$book.getId()">$book.getTitle()</option>
+            #end
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" class="btn btn-primary">Remove Book</button>
+        </div>
+      </div>
+    </form>
+
+    <hr />
+    #end
+  </div>
+</div>

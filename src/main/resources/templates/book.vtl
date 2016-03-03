@@ -45,6 +45,30 @@
           </div>
         </div>
       </form>
+
+      <hr />
+      <h3>Remove an Author</h3>
+      <form class="form-horizontal" action="/books/$book.getId()/removeAuthor" method="post">
+
+        <div class="form-group">
+          <label for="removeAuthor" class="col-sm-2 control-label">Author</label>
+          <div class="col-sm-10">
+            <select class="form-control" name="removeAuthor" id="removeAuthor">
+              #foreach($author in $authors)
+                #if($book.getAuthors().contains($author))
+                  <option value="$author.getId()">$author.getFirstName() $author.getLastName()</option>
+                #end
+              #end
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary">Remove Author</button>
+          </div>
+        </div>
+      </form>
+
       <hr />
       <h3>Manage Inventory</h3>
       <form class="form-horizontal" action="/books/$book.getId()/changeCopies" method="post">
@@ -61,9 +85,16 @@
           </div>
         </div>
       </form>
+
     </div>
     <div class="col-md-6">
-
+      <h3>Users who currently have a copy of $book.getTitle():</h3>
+      <div class="list-group">
+        #foreach($user in $users)
+          <a href="/users/$user.getId()" class="list-group-item">$user.getName()<br>
+          Due $user.getDueDate($book.getId())</a>
+        #end
+      </div>
     </div>
 
   </div>

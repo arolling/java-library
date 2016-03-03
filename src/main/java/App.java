@@ -68,6 +68,7 @@ public class App {
       Book book = Book.find(Integer.parseInt(request.params("id")));
       User currentUser = request.session().attribute("currentUser");
       model.put("authors", Author.all());
+      model.put("users", book.getPatrons());
       model.put("book", book);
       model.put("currentUser", currentUser);
       model.put("template", "templates/book.vtl");
@@ -122,9 +123,26 @@ public class App {
       User currentUser = request.session().attribute("currentUser");
       model.put("author", author);
       model.put("currentUser", currentUser);
+      model.put("books", Book.all());
       model.put("template", "templates/author.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
+
+    post("/authors/:id/addBook", (request, response) -> {
+      Author author = Author.find(Integer.parseInt(request.params("id")));
+      Book book = Book.find(Integer.parseInt(request.queryParams("addBook")));
+      book.addAuthor(author);
+      response.redirect("/authors/" + author.getId());
+      return null;
+    });
+
+    post("/authors/:id/removeBook", (request, response) -> {
+      Author author = Author.find(Integer.parseInt(request.params("id")));
+      Integer bookid = Integer.parseInt(request.queryParams("removeBook"));
+      author.deleteBook(bookid);
+      response.redirect("/authors/" + author.getId());
+      return null;
+    });
 
     post("/addUser", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
@@ -175,6 +193,15 @@ public class App {
       Book book = Book.find(Integer.parseInt(request.params(":id")));
       Author author = Author.find(authorId);
       book.addAuthor(author);
+      response.redirect("/books/" + book.getId());
+      return null;
+    });
+
+    post("/books/:id/removeAuthor", (request, response) -> {
+      int authorId = Integer.parseInt(request.queryParams("removeAuthor"));
+      Book book = Book.find(Integer.parseInt(request.params(":id")));
+      Author author = Author.find(authorId);
+      book.removeAuthor(author);
       response.redirect("/books/" + book.getId());
       return null;
     });
