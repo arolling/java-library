@@ -1,0 +1,13 @@
+<h1>$book.getTitle()</h1>
+
+<h5>Contributing Authors</h5>
+#foreach($author in $book.getAuthors())
+<h3><a href="/authors/$author.getId()">$author.getFirstName() $author.getLastName()</a></h3>
+#end
+
+<h5>Available Copies:</h5>
+<p>$book.copiesLeft() of $book.getCopies()</p>
+
+#if($book.copiesLeft() > 0)
+<a href="/checkout/$book.getId()" class="btn btn-primary">Checkout</a>
+#end
