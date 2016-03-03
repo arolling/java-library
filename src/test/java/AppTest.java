@@ -88,4 +88,6 @@ public class AppTest extends FluentTest {
     click("a", withText("Checkout"));
     assertThat(pageSource()).contains("You have successfully checked out The Stand");
   }
+
+  
 }

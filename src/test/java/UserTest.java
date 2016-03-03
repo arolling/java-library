@@ -116,44 +116,19 @@ public class UserTest {
   }
 
 
-  // @Test
-  // public void addStudent_addsStudentToUser() {
-  //   Student myStudent = new Student("John", "12-23-2015", "History");
-  //   myStudent.save();
-  //
-  //   User myUser = new User("Matt", "password123", "librarian");
-  //   myUser.save();
-  //
-  //   myUser.addStudent(myStudent);
-  //   Student savedStudent = myUser.getStudents().get(0);
-  //   assertTrue(myStudent.equals(savedStudent));
-  // }
+  @Test
+  public void getHistoryDate_returnsDateCheckedOut() {
+    User myUser = new User("Matt", "password123", "patron");
+    myUser.save();
 
-  // @Test
-  // public void getStudents_returnsAllStudents_ArrayList() {
-  //   Student myStudent = new Student("John", "12-23-2015", "History");
-  //   myStudent.save();
-  //
-  //   User myUser = new User("Matt", "password123", "librarian");
-  //   myUser.save();
-  //
-  //   myUser.addStudent(myStudent);
-  //   List savedStudents = myUser.getStudents();
-  //   assertEquals(savedStudents.size(), 1);
-  // }
+    Book myBook = new Book("The Stand", 1);
+    myBook.save();
+    myUser.checkoutBook(myBook.getId());
+    myUser.returnBook(myBook.getId());
+    //assertTrue(myUser.getDueDate(myBook.getId()) instanceof java.sql.Date);
+    assertTrue(myUser.getHistoryDate(myBook.getId()) instanceof java.sql.Date);
+    //assertEquals(0, myUser.getHistoryDate(myBook.getId()));
+  }
 
-
-  // @Test
-  // public void delete_deletesAllUsersAndListsAssoicationes() {
-  //   Book myBook = new Book("The Stand", 1);
-  //   myBook.save();
-  //
-  //   User myUser = new User("Matt", "password123", "librarian");
-  //   myUser.save();
-  //
-  //   myUser.checkoutBook(myBook);
-  //   myUser.delete();
-  //   assertEquals(myBook.getUsers().size(), 0);
-  // }
 
 }

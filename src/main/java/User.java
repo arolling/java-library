@@ -95,9 +95,9 @@ public class User {
 
   public void checkoutBook(int book_id) {
     long currentDate = System.currentTimeMillis();
-    currentDate -= (long) 1569900000; // for testing only
+    currentDate -= (long) 2069900000; // for testing only
     long dueDate = currentDate + (long)259200000;
-    java.sql.Date date = new java.sql.Date(currentDate);
+    java.sql.Date checkoutdate = new java.sql.Date((long)currentDate);
     java.sql.Date due_date = new java.sql.Date(dueDate);
     try(Connection con = DB.sql2o.open()) {
       String checkoutsql = "INSERT INTO checkouts (user_id, book_id, due_date) VALUES (:user_id, :book_id, :date)";
@@ -107,11 +107,11 @@ public class User {
         .addParameter("date", due_date)
         .executeUpdate();
 
-      String historysql = "INSERT INTO reading_history (user_id, book_id, date) VALUES (:user_id, :book_id, :date)";
+      String historysql = "INSERT INTO reading_history (user_id, book_id, checkout_date) VALUES (:user_id, :book_id, :date)";
       con.createQuery(historysql)
         .addParameter("user_id", id)
         .addParameter("book_id", book_id)
-        .addParameter("date", date)
+        .addParameter("date", checkoutdate)
         .executeUpdate();
     }
   }
@@ -127,12 +127,14 @@ public class User {
 
   public List<Book> getHistory() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT books.* FROM users JOIN reading_history ON (users.id = reading_history.user_id) JOIN books ON (reading_history.book_id = books.id) WHERE user_id=:id ORDER BY reading_history.date";
+      String sql = "SELECT books.* FROM users JOIN reading_history ON (users.id = reading_history.user_id) JOIN books ON (reading_history.book_id = books.id) WHERE user_id=:id";
       return con.createQuery(sql)
         .addParameter("id", id)
         .executeAndFetch(Book.class);
     }
   }
+
+
 
   public java.sql.Date getDueDate(int book_id) {
     try(Connection con = DB.sql2o.open()) {
@@ -162,33 +164,14 @@ public class User {
     }
   }
 
-  // public void addStudent(Student student) {
-  //   try(Connection con = DB.sql2o.open()) {
-  //     String sql = "INSERT INTO students_users (student_id, course_id, completed) VALUES (:student_id, :course_id, false)";
-  //     con.createQuery(sql)
-  //     .addParameter("student_id", student.getId())
-  //     .addParameter("course_id", id)
-  //     .executeUpdate();
-  //   }
-  // }
-
-  // public List<Student> getStudents() {
-  //   try(Connection con = DB.sql2o.open()) {
-  //     String sql = "SELECT students.* FROM users JOIN students_users ON (users.id = students_users.course_id) JOIN students ON (students_users.student_id = students.id) WHERE course_id=:id";
-  //     return con.createQuery(sql)
-  //       .addParameter("id", id)
-  //       .executeAndFetch(Student.class);
-  //   }
-  // }
-
-
-
-  // public void delete() {
-  //   try(Connection con = DB.sql2o.open()) {
-  //   String sql = "UPDATE users SET password = 0 WHERE id = :id;";
-  //     con.createQuery(sql)
-  //       .addParameter("id", id)
-  //       .executeUpdate();
-  //   }
-  // }
+  public java.sql.Date getHistoryDate(int book_id) {
+    // this should only be run on the list returned from getHistory
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT checkout_date FROM reading_history WHERE book_id = :book_id AND user_id = :user_id";
+      return con.createQuery(sql)
+        .addParameter("book_id", book_id)
+        .addParameter("user_id", id)
+        .executeAndFetchFirst(java.sql.Date.class);
+    }
+  }
 }

@@ -1,0 +1,8 @@
+<h1>Reading history for $currentUser.getName():</h1>
+
+<dl>
+  #foreach($book in $currentUser.getHistory())
+    <dt><a href="/books/$book.getId()">$book.getTitle()</a> by $book.getPrettyAuthors()</dt>
+    <dd>Checked Out: $currentUser.getHistoryDate($book.getId())</dd>
+  #end
+</dl>
