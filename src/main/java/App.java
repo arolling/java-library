@@ -67,6 +67,7 @@ public class App {
       HashMap<String, Object> model = new HashMap<String, Object>();
       Book book = Book.find(Integer.parseInt(request.params("id")));
       User currentUser = request.session().attribute("currentUser");
+      model.put("authors", Author.all());
       model.put("book", book);
       model.put("currentUser", currentUser);
       model.put("template", "templates/book.vtl");
@@ -168,5 +169,23 @@ public class App {
       model.put("template", "templates/welcome.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
+
+    post("/books/:id/addAuthor", (request, response) -> {
+      int authorId = Integer.parseInt(request.queryParams("selectAuthor"));
+      Book book = Book.find(Integer.parseInt(request.params(":id")));
+      Author author = Author.find(authorId);
+      book.addAuthor(author);
+      response.redirect("/books/" + book.getId());
+      return null;
+    });
+
+    post("/books/:id/changeCopies", (request, response) -> {
+      int copies = Integer.parseInt(request.queryParams("addCopies"));
+      Book book = Book.find(Integer.parseInt(request.params(":id")));
+
+      book.update(copies);
+      response.redirect("/books/" + book.getId());
+      return null;
+    });
   }
 }

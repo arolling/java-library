@@ -19,9 +19,10 @@ body {
   min-height: 100%;
 }
 
-#catalognav {
+.catalognav {
   text-align: right;
 }
+
 dd {
   padding-bottom: 7px;
 }
@@ -40,4 +41,8 @@ dt {
 
 .form-control {
   width: 80%;
+}
+
+.control-label {
+
 }

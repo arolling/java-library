@@ -61,14 +61,16 @@ public class Book {
     }
   }
 
-  public void update(int copies) {
-    this.copies = copies;
-    try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE books SET copies = :copies WHERE id = :id";
-      con.createQuery(sql)
-        .addParameter("copies", copies)
-        .addParameter("id", id)
-        .executeUpdate();
+  public void update(int newCopies) {
+    if (this.copiesLeft() + newCopies >= 0) {
+      copies += newCopies;
+      try(Connection con = DB.sql2o.open()) {
+        String sql = "UPDATE books SET copies = :copies WHERE id = :id";
+        con.createQuery(sql)
+          .addParameter("copies", copies)
+          .addParameter("id", id)
+          .executeUpdate();
+      }
     }
   }
 
