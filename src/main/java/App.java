@@ -1,5 +1,5 @@
 import java.util.HashMap;
-
+import java.util.List;
 import spark.ModelAndView;
 import spark.template.velocity.VelocityTemplateEngine;
 
@@ -38,6 +38,27 @@ public class App {
       User currentUser = request.session().attribute("currentUser");
       model.put("currentUser", currentUser);
       model.put("template", "templates/welcome.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/search", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      User currentUser = request.session().attribute("currentUser");
+      model.put("currentUser", currentUser);
+      model.put("template", "templates/search.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/search", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      User currentUser = request.session().attribute("currentUser");
+      String search = request.queryParams("search");
+      List<Book> foundBooks = Book.searchTitle(search);
+      List<Author> foundAuthors = Author.searchAuthor(search);
+      model.put("foundAuthors", foundAuthors);
+      model.put("foundBooks", foundBooks);
+      model.put("currentUser", currentUser);
+      model.put("template", "templates/search.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
   }

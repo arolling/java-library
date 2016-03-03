@@ -43,7 +43,7 @@ public class User {
   }
 
   public static List<User> all() {
-    String sql = "SELECT * FROM users ORDER BY user_id";
+    String sql = "SELECT * FROM users ORDER BY id";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql).executeAndFetch(User.class);
     }
