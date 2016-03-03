@@ -5,6 +5,8 @@
     <div class="col-md-9">
       #if($newBook)
         <h3>You have successfully checked out $newBook.getTitle() by $newBook.getPrettyAuthors()</h3>
+      #elseif($returnBook)
+        <h3>You have successfully returned $returnBook.getTitle() by $returnBook.getPrettyAuthors()</h3>
       #end
       <br>
       <h4>Currently Checked Out Books</h4>

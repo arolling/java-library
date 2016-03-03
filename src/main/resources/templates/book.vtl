@@ -8,6 +8,13 @@
 <h5>Available Copies:</h5>
 <p>$book.copiesLeft() of $book.getCopies()</p>
 
-#if($book.copiesLeft() > 0)
+#if ($currentUser.getCheckedOutBooks().contains($book))
+<a href="/return/$book.getId()" class="btn btn-success">Return</a>
+
+#elseif($book.copiesLeft() > 0)
 <a href="/checkout/$book.getId()" class="btn btn-primary">Checkout</a>
+
+#else
+
+<a href="/welcome" class="btn btn-warning">Place Hold</a>
 #end

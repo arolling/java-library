@@ -101,5 +101,17 @@ public class App {
       model.put("template", "templates/history.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
+
+    get("/return/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      Book book = Book.find(Integer.parseInt(request.params("id")));
+      User currentUser = request.session().attribute("currentUser");
+      currentUser.returnBook(book.getId());
+
+      model.put("returnBook", book);
+      model.put("currentUser", currentUser);
+      model.put("template", "templates/welcome.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
   }
 }

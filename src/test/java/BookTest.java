@@ -108,4 +108,16 @@ public class BookTest {
 
   }
 
+  @Test
+  public void isOverdue_returnsTrueIfOverdue() {
+    User myUser = new User("Matt", "password123", "patron");
+    myUser.save();
+
+    Book myBook = new Book("The Stand", 3);
+    myBook.save();
+
+    myUser.checkoutBook(myBook.getId());
+    assertTrue(myBook.isOverdue(myUser));
+  }
+
 }

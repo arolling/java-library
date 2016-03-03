@@ -97,7 +97,7 @@ public class User {
     long currentDate = System.currentTimeMillis();
     currentDate -= (long) 2069900000; // for testing only
     long dueDate = currentDate + (long)259200000;
-    java.sql.Date checkoutdate = new java.sql.Date((long)currentDate);
+    java.sql.Date checkoutdate = new java.sql.Date(currentDate);
     java.sql.Date due_date = new java.sql.Date(dueDate);
     try(Connection con = DB.sql2o.open()) {
       String checkoutsql = "INSERT INTO checkouts (user_id, book_id, due_date) VALUES (:user_id, :book_id, :date)";

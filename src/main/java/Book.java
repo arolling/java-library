@@ -135,5 +135,15 @@ public class Book {
     }
   }
 
+  public boolean isOverdue(User user) {
+    java.sql.Date due_date = user.getDueDate(id);
+    long currentDateLong = System.currentTimeMillis();
+    java.sql.Date currentDate = new java.sql.Date(currentDateLong);
+    if(due_date.before(currentDate)) {
+      return true;
+    }
+    return false;
+  }
+
 
 }
