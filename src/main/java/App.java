@@ -37,6 +37,7 @@ public class App {
       HashMap<String, Object> model = new HashMap<String, Object>();
       User currentUser = request.session().attribute("currentUser");
       model.put("currentUser", currentUser);
+      model.put("authors", Author.all());
       model.put("template", "templates/welcome.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
@@ -130,9 +131,40 @@ public class App {
       String newPassword = request.queryParams("userPassword");
       String newPermissions = request.queryParams("userPermissions");
       User newUser = new User(newUsername, newPassword, newPermissions);
+      newUser.save();
       User currentUser = request.session().attribute("currentUser");
       model.put("currentUser", currentUser);
+      model.put("authors", Author.all());
       model.put("newUser", newUser);
+      model.put("template", "templates/welcome.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/addAuthor", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      String firstName = request.queryParams("addFirst");
+      String lastName = request.queryParams("addLast");
+      Author newAuthor = new Author(firstName, lastName);
+      newAuthor.save();
+      User currentUser = request.session().attribute("currentUser");
+      model.put("currentUser", currentUser);
+      model.put("authors", Author.all());
+      model.put("template", "templates/welcome.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/addBook", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      String title = request.queryParams("addTitle");
+      Integer authorId = Integer.parseInt(request.queryParams("selectAuthor"));
+      Integer copies = Integer.parseInt(request.queryParams("addCopies"));
+      Book newBook = new Book(title, copies);
+      newBook.save();
+      newBook.addAuthor(Author.find(authorId));
+      User currentUser = request.session().attribute("currentUser");
+      model.put("currentUser", currentUser);
+      model.put("authors", Author.all());
+      model.put("newBook", newBook);
       model.put("template", "templates/welcome.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());

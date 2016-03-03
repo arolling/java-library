@@ -1,5 +1,6 @@
+#if($currentUser)
 <h1>Welcome, $currentUser.getName()</h1>
-
+#end
 #if($currentUser.getPermissions().equals("patron"))
   <div class="row">
     <div class="col-md-9">
@@ -30,7 +31,7 @@
   </div>
 
 
-#else
+#elseif ($currentUser.getPermissions() == "librarian")
 <div class="row">
   <div class="col-md-5">
     #if($newUser)
@@ -41,32 +42,94 @@
 
     <form class="form-horizontal" action="/addUser" method="post">
       <div class="form-group">
-        <label for="userName" class="col-sm-2 control-label">Name</label>
-        <div class="col-sm-10">
-          <input type="text" name="userName" id="userName" class="form-control">
+        <label for="userName" class="col-sm-3 control-label">Name</label>
+        <div class="col-sm-9">
+          <input type="text" name="userName" id="userName" class="form-control" required>
         </div>
       </div>
       <div class="form-group">
-        <label for="userPassword" class="col-sm-2 control-label">Password</label>
-        <div class="col-sm-10">
-          <input type="password" name="userPassword" id="userPassword" class="form-control" placeholder="Password">
+        <label for="userPassword" class="col-sm-3 control-label">Password</label>
+        <div class="col-sm-9">
+          <input type="password" name="userPassword" id="userPassword" class="form-control" placeholder="Password" required>
         </div>
       </div>
       <div class="form-group">
-        <label for="userPermissions" class="col-sm-2 control-label">Permissions</label>
-        <div class="col-sm-10">
+        <label for="userPermissions" class="col-sm-3 control-label">Permissions</label>
+        <div class="col-sm-9">
           <select class="form-control" name="userPermissions" id="userPermissions">
             <option value="patron">Patron</option>
             <option value="librarian">Librarian</option>
           </select>
         </div>
       </div>
-      <button type="submit" id="addUser" class="btn btn-primary">Add User</button>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+          <button type="submit" id="addUser" class="btn btn-primary">Add User</button>
+        </div>
+      </div>
+
 
     </form>
   </div>
   <div class="col-md-5">
+    #if($newBook)
+    <h4>$newBook.getTitle() by $newBook.getPrettyAuthors() has been added.</h4>
+    <br />
+    #end
+    <h3>Add Author</h3>
+    <form class="form-horizontal" action="/addAuthor" method="post">
+      <div class="form-group">
+        <label for="addFirst" class="col-sm-3 control-label">First Name</label>
+        <div class="col-sm-9">
+          <input type="text" name="addFirst" id="addFirst" class="form-control" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="addLast" class="col-sm-3 control-label">Last Name</label>
+        <div class="col-sm-9">
+          <input type="text" name="addLast" id="addLast" class="form-control" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+          <button type="submit" id="addAuthor" class="btn btn-primary">Add Author</button>
+        </div>
+      </div>
 
+    </form>
+    <br />
+    <h3>Add Book</h3>
+    <form class="form-horizontal" action="/addBook" method="post">
+      <div class="form-group">
+        <label for="addTitle" class="col-sm-3 control-label">Title</label>
+        <div class="col-sm-9">
+          <input type="text" name="addTitle" id="addTitle" class="form-control" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="addCopies" class="col-sm-3 control-label">Number of Copies</label>
+        <div class="col-sm-9">
+          <input type="number" name="addCopies" id="addCopies" class="form-control" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="selectAuthor" class="col-sm-3 control-label">Author</label>
+        <div class="col-sm-9">
+          <select class="form-control" name="selectAuthor" id="selectAuthor">
+            #foreach($author in $authors)
+              <option value="$author.getId()">$author.getFirstName() $author.getLastName()</option>
+            #end
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+          <button type="submit" id="addBook" class="btn btn-primary">Add Book</button>
+        </div>
+      </div>
+    </form>
   </div>
   <div class="col-md-2">
     <h3><a href="/search">Search Catalog</a></h3>
@@ -79,4 +142,7 @@
     <hr />
   </div>
 </div>
+
+#else
+<h1>Please <a href="/">Login</a></h1>
 #end

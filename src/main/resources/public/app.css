@@ -37,3 +37,7 @@ dt {
 .footerlink {
   margin-left: 20px;
 }
+
+.form-control {
+  width: 80%;
+}
