@@ -23,7 +23,7 @@
 
 #if($currentUser.getPermissions().equals("librarian"))
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-6 leftcolumn">
       <h3>Add another Author</h3>
       <form class="form-horizontal" action="/books/$book.getId()/addAuthor" method="post">
 
@@ -87,7 +87,7 @@
       </form>
 
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 rightcolumn">
       <h3>Users who currently have a copy of $book.getTitle():</h3>
       <div class="list-group">
         #foreach($user in $users)

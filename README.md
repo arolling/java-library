@@ -2,13 +2,14 @@
 
 #### A library management app
 
-#### By Matt Rosanio & Abby Rolling
+#### By Matt Rosanio & Abby Rolling, March 2-3 2016
 
 ## Description
 
-_{This is a detailed description of your application. Its purpose and usage.  Give as much detail as needed to explain what the application does, and any other information you want users or other developers to have. }_
+This web based app allows a library patron to search for books, check them out, return books, and view their account details including changing password.
 
-## Setup/Installation Requirements
+It allows librarians to add books, authors, and users, as well as editing books and users and changing user permissions. It also provides a list of patrons with overdue books with links to their user details.
+
 
 ## Setup/Installation Requirements
 
@@ -24,7 +25,7 @@ Open terminal and run Postgres:
 $ postgres
 ```
 
-Open a new tab in terminal and create the `to_do` database:
+Open a new tab in terminal and create the `library` database:
 ```
 $ psql
 $ CREATE DATABASE library;
@@ -38,11 +39,8 @@ $ gradle run
 
 ## Known Bugs
 
-_{Are there issues that have not yet been resolved that you want to let users know you know?  Outline any issues that would impact use of your application.  Share any workarounds that are in place. }_
-
-## Support and contact details
-
-_{Let people know what to do if they run into any issues or have questions, ideas or concerns.  Encourage them to contact you or make a contribution to the code.}_
+- Does not sort checked out books or overdue books by due date.
+- Due date is hard coded to be 3 days after check out date.
 
 ## Technologies Used
 

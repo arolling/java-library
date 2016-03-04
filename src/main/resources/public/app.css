@@ -1,22 +1,12 @@
 .footer {
   font-size: 170%;
   text-align: right;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   background-color: #0E8299;
   width: 100%;
 
   height: 100px;
-}
-
-.jumbotron {
-  text-align: center;
-  background-color: #148C1A;
-  color: #CCC8C8;
-}
-
-a {
-  color: #0E8299;
 }
 
 html {
@@ -27,6 +17,16 @@ html {
 body {
   margin-bottom: 100px;
   min-height: 100%;
+}
+
+.jumbotron {
+  text-align: center;
+  background-color: #148C1A;
+  color: #CCC8C8;
+}
+
+a {
+  color: #0E8299;
 }
 
 .catalognav {
@@ -50,6 +50,10 @@ dt {
   color: #12BA79;
 }
 
+.footerlink:hover {
+  color: #84C413;
+}
+
 .form-control {
   width: 80%;
 }
@@ -58,6 +62,23 @@ dt {
   color: #CCC8C8;
 }
 
-.col-md-3, .col-md-6 {
-  border-left: solid grey 1px;
+.col-md-3 {
+  border-left: solid #CCC8C8 1px;
+}
+
+.leftcolumn {
+  border-right: solid #CCC8C8 1px;
+}
+
+.rightcolumn {
+  border-left: solid #CCC8C8 1px;
+}
+
+a.list-group-item:hover, a.list-group-item:focus {
+  background-color: #786D0B;
+  color: #CCC8C8;
+}
+
+a:hover {
+  color: #0E6313;
 }

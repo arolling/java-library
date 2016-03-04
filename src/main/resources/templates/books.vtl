@@ -1,15 +1,15 @@
 <h1>Catalog:</h1>
 
 <div class="row">
-  <div class="col-md-6">
-    <h3>Titles</h3>
+  <div class="col-md-6 leftcolumn">
+    <h2>Titles</h2>
     #foreach($book in $books)
       <h3><a href="/books/$book.getId()">$book.getTitle()</a></h3>
       <h4>By $book.getPrettyAuthors()</h4>
     #end
   </div>
-  <div class="col-md-6">
-    <h3>Authors</h3>
+  <div class="col-md-6 rightcolumn">
+    <h2>Authors</h2>
     #foreach($author in $authors)
       <h3><a href="/authors/$author.getId()">$author.getFirstName() $author.getLastName()</a></h3>
     #end
