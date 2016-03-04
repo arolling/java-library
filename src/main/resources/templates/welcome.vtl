@@ -15,7 +15,7 @@
         #foreach($book in $currentUser.getCheckedOutBooks())
           <dt><a href="/books/$book.getId()">$book.getTitle()</a> by $book.getPrettyAuthors()</dt>
           <dd>Due Date: $currentUser.getDueDate($book.getId()) #if($book.isOverdue($currentUser))<span class="overdue">OVERDUE</span>#end</dd>
-          <dd><a href="return/$book.getId()" class="btn btn-default btn-xs">Return</a></dd>
+          <dd><a href="/return/$book.getId()" class="btn btn-default btn-xs">Return</a></dd>
 
         #end
       </dl>
