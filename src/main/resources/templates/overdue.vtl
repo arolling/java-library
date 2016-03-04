@@ -1,0 +1,13 @@
+<h1>Overdue Accounts</h1>
+<dl>
+  #foreach($user in $overdueUsers)
+    <dt><h3><a href="/users/$user.getId()">$user.getName()</a></h3></dt>
+    #foreach ($book in $user.getCheckedOutBooks())
+      #if ($book.isOverdue($user))
+        <dd><a href="/books/$book.getId()">$book.getTitle()</a> by $book.getPrettyAuthors()</dd>
+        <dd>Due: $user.getDueDate($book.getId())</dd>
+      #end
+
+    #end
+  #end
+</dl>

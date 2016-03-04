@@ -1,0 +1,13 @@
+#if($currentUser.getPermissions().equals("librarian"))
+<dl>
+  #foreach($user in $users)
+    <dt><h3><a href="/users/$user.getId()">$user.getName()</a></h3></dt>
+    <dd>Permissions: $user.getPermissions()</dd>
+    #if ($overdue.contains($user))
+      <dd><span class="overdue">OVERDUE BOOKS</span></dd>
+    #end
+  #end
+</dl>
+#else
+<h1>Nice Try...</h1>
+#end

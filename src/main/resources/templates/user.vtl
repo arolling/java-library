@@ -1,0 +1,34 @@
+<h1>$user.getName()</h1>
+<h3>Permissions Level: $user.getPermissions()</h3>
+#if($overdue.contains($user))
+  <h1 class="overdue">OVERDUE BOOKS</h1>
+#end
+<h3>Currently Checked Out Books:</h3>
+<dl>
+  #foreach($book in $user.getCheckedOutBooks())
+    <dt><a href="/books/$book.getId()">$book.getTitle()</a> by $book.getPrettyAuthors()</dt>
+    <dd>Due Date: $user.getDueDate($book.getId()) </dd>
+      <dd>#if($book.isOverdue($user))<span class="overdue">OVERDUE</span>#end</dd>
+  #end
+</dl>
+#if($currentUser.getPermissions().equals("librarian"))
+  <form class="form-inline" action="/users/$user.getId()/permissions" method="post">
+    <div class="form-group">
+      <label for="permissions">Change Permissions Level</label>
+      <select class="form-control" name="permissions">
+        <option value="librarian">Librarian</option>
+        <option value="patron">Patron</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Go!</button>
+  </form>
+#end
+#if($currentUser.getPermissions().equals("patron"))
+  <form class="form-inline" action="/users/$user.getId()/password" method="post">
+    <div class="form-group">
+      <label for="password">Change Your Password</label>
+      <input type="password" name="password" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Go!</button>
+  </form>
+#end

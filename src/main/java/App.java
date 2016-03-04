@@ -33,12 +33,27 @@ public class App {
       return null;
     });
 
+    get("/logout", (request, response) -> {
+      request.session().attribute("currentUser", null);
+      response.redirect("/");
+      return null;
+    });
+
     get("/welcome", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       User currentUser = request.session().attribute("currentUser");
       model.put("currentUser", currentUser);
       model.put("authors", Author.all());
       model.put("template", "templates/welcome.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/overdue", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      User currentUser = request.session().attribute("currentUser");
+      model.put("currentUser", currentUser);
+      model.put("overdueUsers", User.findOverdue());
+      model.put("template", "templates/overdue.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
@@ -90,9 +105,20 @@ public class App {
     get("/browse", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       User currentUser = request.session().attribute("currentUser");
+      model.put("authors", Author.all());
       model.put("books", Book.all());
       model.put("currentUser", currentUser);
       model.put("template", "templates/books.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/users", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      User currentUser = request.session().attribute("currentUser");
+      model.put("overdue", User.findOverdue());
+      model.put("users", User.all());
+      model.put("currentUser", currentUser);
+      model.put("template", "templates/users.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
@@ -132,6 +158,15 @@ public class App {
       Author author = Author.find(Integer.parseInt(request.params("id")));
       Book book = Book.find(Integer.parseInt(request.queryParams("addBook")));
       book.addAuthor(author);
+      response.redirect("/authors/" + author.getId());
+      return null;
+    });
+
+    post("/authors/:id/changeName", (request, response) -> {
+      Author author = Author.find(Integer.parseInt(request.params("id")));
+      String newFirstName = request.queryParams("firstName");
+      String newLastName = request.queryParams("lastName");
+      author.update(newFirstName, newLastName);
       response.redirect("/authors/" + author.getId());
       return null;
     });
@@ -212,6 +247,33 @@ public class App {
 
       book.update(copies);
       response.redirect("/books/" + book.getId());
+      return null;
+    });
+
+    get("/users/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      User user = User.find(Integer.parseInt(request.params("id")));
+      User currentUser = request.session().attribute("currentUser");
+      model.put("user", user);
+      model.put("currentUser", currentUser);
+      model.put("overdue", User.findOverdue());
+      model.put("template", "templates/user.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/users/:id/permissions", (request, response) -> {
+      User user = User.find(Integer.parseInt(request.params(":id")));
+      String newPermissions = request.queryParams("permissions");
+      user.updatePermissions(newPermissions);
+      response.redirect("/users/" + user.getId());
+      return null;
+    });
+
+    post("/users/:id/password", (request, response) -> {
+      User user = User.find(Integer.parseInt(request.params(":id")));
+      String newPassword = request.queryParams("password");
+      user.updatePassword(newPassword);
+      response.redirect("/users/" + user.getId());
       return null;
     });
   }

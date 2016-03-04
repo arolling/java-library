@@ -121,7 +121,7 @@ public class Book {
       if (i < authors.size() - 2) {
         pretty += ", ";
       } else if (i == authors.size() - 2) {
-        pretty += ", and ";
+        pretty += " and ";
       }
     }
     return pretty;

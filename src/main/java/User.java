@@ -158,7 +158,7 @@ public class User {
 
   public static List<User> findOverdue() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "SELECT users.* FROM checkouts JOIN users ON (users.id = checkouts.user_id) WHERE due_date < CURRENT_DATE";
+      String sql = "SELECT DISTINCT ON (id) users.* FROM checkouts JOIN users ON (users.id = checkouts.user_id) WHERE due_date < CURRENT_DATE";
       return con.createQuery(sql)
         .executeAndFetch(User.class);
     }

@@ -15,9 +15,11 @@
     </div>
     <footer class="footer">
       <div class="container">
+        #if(!$currentUser)
         <a href="/" class="footerlink">Login</a>
-        #if($currentUser)
+        #else
         <a href="/welcome" class="footerlink">Home</a>
+        <a href="/logout" class="footerlink">Logout</a>
         #end
          <br/>
         <p class="text-muted small">Copyright 2016 Abigail Rolling & Matt Rosanio</p>
