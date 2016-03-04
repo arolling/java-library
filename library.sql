@@ -174,7 +174,7 @@ CREATE TABLE reading_history (
     id integer NOT NULL,
     book_id integer,
     user_id integer,
-    date date
+    checkout_date date
 );
 
 
@@ -285,8 +285,9 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 COPY authors (id, first_name, last_name) FROM stdin;
 1	Stephen	King
 2	Nora	Roberts
-3	Isaac	Asimov
 4	Douglas	Adams
+5	Mary	Phillips
+3	Isaac	Asimov
 \.
 
 
@@ -298,10 +299,14 @@ COPY authors_books (id, book_id, author_id) FROM stdin;
 1	5	1
 2	6	1
 3	7	2
-4	1	3
 5	2	3
 6	3	3
 7	4	4
+10	1	2
+11	9	4
+12	8	3
+14	1	3
+15	2	5
 \.
 
 
@@ -309,14 +314,14 @@ COPY authors_books (id, book_id, author_id) FROM stdin;
 -- Name: authors_books_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('authors_books_id_seq', 8, true);
+SELECT pg_catalog.setval('authors_books_id_seq', 15, true);
 
 
 --
 -- Name: authors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('authors_id_seq', 4, true);
+SELECT pg_catalog.setval('authors_id_seq', 5, true);
 
 
 --
@@ -325,13 +330,14 @@ SELECT pg_catalog.setval('authors_id_seq', 4, true);
 
 COPY books (id, title, copies) FROM stdin;
 1	The Caves of Steel	34
-2	Foundation	4
 3	Foundation and Empire	9
 4	Hitchhiker's Guide to the Galaxy	45
 5	The Stand	101
-6	Carrie	5
 7	Mistaken	13
 8	Robots and Foundation	19
+9	So Long and Thanks for All the Fish	55
+2	Foundation	4
+6	Carrie	4
 \.
 
 
@@ -339,7 +345,7 @@ COPY books (id, title, copies) FROM stdin;
 -- Name: books_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('books_id_seq', 8, true);
+SELECT pg_catalog.setval('books_id_seq', 9, true);
 
 
 --
@@ -347,8 +353,14 @@ SELECT pg_catalog.setval('books_id_seq', 8, true);
 --
 
 COPY checkouts (id, book_id, user_id, due_date) FROM stdin;
-1	1	1	2016-02-23
-2	1	2	2016-03-05
+11	4	3	2016-02-11
+13	7	3	2016-02-11
+14	8	4	2016-02-11
+15	9	4	2016-02-11
+16	6	4	2016-02-11
+17	4	4	2016-03-06
+18	5	2	2016-03-06
+21	3	2	2016-03-06
 \.
 
 
@@ -356,14 +368,29 @@ COPY checkouts (id, book_id, user_id, due_date) FROM stdin;
 -- Name: checkouts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('checkouts_id_seq', 2, true);
+SELECT pg_catalog.setval('checkouts_id_seq', 21, true);
 
 
 --
 -- Data for Name: reading_history; Type: TABLE DATA; Schema: public; Owner: Guest
 --
 
-COPY reading_history (id, book_id, user_id, date) FROM stdin;
+COPY reading_history (id, book_id, user_id, checkout_date) FROM stdin;
+5	6	2	2016-02-08
+6	7	2	2016-02-08
+7	5	2	2016-02-08
+8	4	3	2016-02-08
+9	4	3	2016-02-08
+10	1	3	2016-02-08
+11	7	3	2016-02-08
+12	8	4	2016-02-08
+13	9	4	2016-02-08
+14	6	4	2016-02-08
+15	4	4	2016-03-03
+16	5	2	2016-03-03
+17	6	2	2016-03-03
+18	4	2	2016-03-03
+19	3	2	2016-03-03
 \.
 
 
@@ -371,7 +398,7 @@ COPY reading_history (id, book_id, user_id, date) FROM stdin;
 -- Name: reading_history_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('reading_history_id_seq', 1, false);
+SELECT pg_catalog.setval('reading_history_id_seq', 19, true);
 
 
 --
@@ -379,12 +406,14 @@ SELECT pg_catalog.setval('reading_history_id_seq', 1, false);
 --
 
 COPY users (id, name, password, permissions) FROM stdin;
-2	Abby	123123	patron
-3	June	123123	patron
 4	Jerry	123123	patron
 5	Bob	123123	patron
 6	Mary	123123	patron
 1	Matt	123	librarian
+7	Jane Doe	111	librarian
+3	June	1234	patron
+2	Abby	123123	patron
+8	Alissa	123	patron
 \.
 
 
@@ -392,7 +421,7 @@ COPY users (id, name, password, permissions) FROM stdin;
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('users_id_seq', 6, true);
+SELECT pg_catalog.setval('users_id_seq', 8, true);
 
 
 --
